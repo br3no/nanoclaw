@@ -71,12 +71,12 @@ export function stopContainer(name: string): void {
 /** Ensure the container runtime is running, starting it if needed. */
 export function ensureContainerRuntimeRunning(): void {
   try {
-    execSync(`${CONTAINER_RUNTIME_BIN} system status`, { stdio: 'pipe' });
+    execSync(`${CONTAINER_RUNTIME_BIN} info`, { stdio: 'pipe' });
     logger.debug('Container runtime already running');
   } catch {
     logger.info('Starting container runtime...');
     try {
-      execSync(`${CONTAINER_RUNTIME_BIN} system start`, {
+      execSync(`sudo systemctl start docker`, {
         stdio: 'pipe',
         timeout: 30000,
       });
@@ -96,10 +96,10 @@ export function ensureContainerRuntimeRunning(): void {
         '║  Agents cannot run without a container runtime. To fix:        ║',
       );
       console.error(
-        '║  1. Ensure Apple Container is installed                        ║',
+        '║  1. Ensure Docker is installed and running                     ║',
       );
       console.error(
-        '║  2. Run: container system start                                ║',
+        '║  2. Run: sudo systemctl start docker                          ║',
       );
       console.error(
         '║  3. Restart NanoClaw                                           ║',
